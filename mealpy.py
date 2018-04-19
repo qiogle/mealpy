@@ -87,10 +87,10 @@ class MealPal(object):
                 restaurant_name, city_name, city_id)['id']
 
         reserve_data = {
-            'quantity': 1,
-            'schedule_id': schedule_id,
-            'pickup_time': timing,
-            'source': 'Web'
+                'quantity': 1,
+                'schedule_id': schedule_id,
+                'pickup_time': timing,
+                'source': 'Web'
         }
 
         r = requests.post(
@@ -107,13 +107,11 @@ class MealPal(object):
         pass
 
 scheduler = BlockingScheduler()
-print "Enter email: "
-email = raw_input()
-print "Enter password: "
-password = getpass.getpass()
+email = 'plantspreferstanding@gmail.com'
+password = 'plantsarestanding'
 
 
-@scheduler.scheduled_job('cron', hour=16, minute=59, second=58)
+@scheduler.scheduled_job('cron', hour=16, minute=59, second=20)
 def execute_reserve_meal():
     mp = MealPal()
 
@@ -130,9 +128,9 @@ def execute_reserve_meal():
     while True:
         try:
             status_code = mp.reserve_meal(
-                '12:15pm-12:30pm',
-                restaurant_name='Coast Poke Counter - Battery St.',
-                city_name='San Francisco')
+                '12:30pm-12:45pm',
+                restaurant_name='sweetgreen - Union Square',
+                city_name='New York City')
             if status_code == 200:
                 print 'Reservation success!'
                 print 'Leave this script running to reschedule again the next day!'
@@ -142,5 +140,5 @@ def execute_reserve_meal():
         except IndexError:
             print "Retrying..."
             time.sleep(0.05)
-
+# execute_reserve_meal()
 scheduler.start()
